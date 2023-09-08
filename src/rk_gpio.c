@@ -142,7 +142,7 @@ int str_to_rk_gpio(const char * str)
     //ret = sscanf(str_buff, "gpio%d_%c%d", &bank, &group, &pos);
     ret = sscanf(str_buff, "%d%c%d", &bank, &group, &pos);
 
-    if(platform == RK3588_GPIO_PLATFORM)
+    if(platform == RK3588_GPIO_PLATFORM || platform == RK3568_GPIO_PLATFORM)
     {
         pin = bank * 32 + (((group - 'a') * 8) + pos);
         rkgpio_debug("pin = %d \t= [ bank(%d) * 32 ] + [ group(%c->%d) * 8 ] + pos(%d)\n", pin, bank, group, group - 'a', pos);
@@ -153,7 +153,6 @@ int str_to_rk_gpio(const char * str)
 
 int test(void)
 {
-
     set_rk_gpio_platform(RK3588_GPIO_PLATFORM);
 
     str_to_rk_gpio("GPIO1_A0");
@@ -168,3 +167,7 @@ int test(void)
     return 0;
 }
 
+int main(void)
+{
+    test();
+}
