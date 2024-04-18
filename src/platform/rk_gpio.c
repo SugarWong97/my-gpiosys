@@ -151,23 +151,57 @@ int str_to_rk_gpio(const char * str)
     return pin;
 }
 
-int test(void)
+int rk_io_setvalue(const char * rk_gpio_srt, int value)
 {
-    set_rk_gpio_platform(RK3588_GPIO_PLATFORM);
+    int test_rk_gpio_index = 19;
+    int ret;
 
-    str_to_rk_gpio("GPIO1_A0");
-    str_to_rk_gpio("1a0");
-    str_to_rk_gpio("gpio1_a6");
+    // 设置SOC平台RK 的 RK3588
+    ret = set_rk_gpio_platform(RK3588_GPIO_PLATFORM);
+    // 将标号转换为 gpio的索引
+    //str_to_rk_gpio("GPIO1_A0");
+    //str_to_rk_gpio("1a0");
+    //str_to_rk_gpio("gpio1_a6");
+    //str_to_rk_gpio("GPIO4_C6");
+    //str_to_rk_gpio("gpio4_c6");
+    //str_to_rk_gpio("4_c6");
+    //str_to_rk_gpio("4c6");
+    test_rk_gpio_index = str_to_rk_gpio(rk_gpio_srt);
+    printf("index %d\n", test_rk_gpio_index);
 
-    str_to_rk_gpio("GPIO4_C6");
-    str_to_rk_gpio("gpio4_c6");
-    str_to_rk_gpio("4_c6");
-    str_to_rk_gpio("4c6");
+    // 标准GPIO-Sys 操作
+    ret = gpio_export(test_rk_gpio_index);
+    ret = gpio_direction_output(test_rk_gpio_index);
 
+    if(value)
+    {
+        gpio_set_value(test_rk_gpio_index, 1);
+    } else
+    {
+        gpio_set_value(test_rk_gpio_index, 0);
+    }
+
+    return gpio_unexport(test_rk_gpio_index);
+}
+
+/*
+int main(int argc, char * argv[])
+{
+    if(argc < 3)
+    {
+        printf("%s  RK_GPIO1_A0  0/1\n", argv[0]);
+        return -1;
+    }else
+    {
+        //rk_io_setvalue("rk_gpio1_a6", 0);
+        if(argv[2][0] == '1')
+        {
+            rk_io_setvalue(argv[1], 1);
+        }else
+        {
+            rk_io_setvalue(argv[1], 0);
+        }
+    }
     return 0;
 }
-
-int main(void)
-{
-    test();
-}
+*/
