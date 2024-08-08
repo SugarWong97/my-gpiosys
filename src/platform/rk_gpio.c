@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include "str.h"
 #include "rk_gpio.h"
 
 static int platform = RK3588_GPIO_PLATFORM;
@@ -19,66 +20,7 @@ static int platform = RK3588_GPIO_PLATFORM;
 #define rkgpio_error(format,...) printf
 #endif
 
-static int for_rk_str_to_lower(char * str, int len)
-{
-    int i;
-    for(i=0;i<len;i++)//遍历
-    {
-        if(0)//str[i]>='a'&&str[i]<='z')
-        {
-            str[i]-=32;
-        }
-        else if(str[i]>='A'&&str[i]<='Z')
-        {
-            str[i]+=32;
-        }
-    }
-    return 0;
-}
 
-
-/***********************************************
- *  * _for_rk_str_replace
- *   * 字符串替换
- *    *
- *     * pszInput       要转变的字符串
- *      * pszOld                要替换的子串
- *       * pszNew               被替换成的子串
- *        * pszOutput   输出的缓冲区
- *         * nOutputlen 输出缓冲区的长度
- *          *
- *           **********************************************/
-static void _for_rk_str_replace(char * pszInput, char * pszOld, char * pszNew,char * pszOutput,int nOutputlen)
-{
-    char temp[128];
-    int nLen=0;
-    char *s, *p;
-    s = pszInput;
-    while (s != NULL)
-    {
-        p = strstr(s, pszOld);
-
-        if (p == NULL )
-        {
-            memcpy(pszOutput+nLen,s,strlen(s)+nLen>nOutputlen?nOutputlen-nLen:strlen(s));
-            return ;
-        }
-        memcpy(pszOutput+nLen,s,p-s+nLen>nOutputlen?nOutputlen-nLen:p-s);
-        nLen+=p-s+nLen>nOutputlen?nOutputlen-nLen:p-s;
-        if(nLen>=nOutputlen)
-        {
-            return;
-        }
-        memcpy(pszOutput+nLen,pszNew,strlen(pszNew)+nLen>nOutputlen?nOutputlen-nLen:strlen(pszNew));
-        nLen+=strlen(pszNew)+nLen>nOutputlen?nOutputlen-nLen:strlen(pszNew);
-        if(nLen>=nOutputlen)
-        {
-            return;
-        }
-        s+=strlen(pszOld)+p-s;
-    }
-    return ;
-}
 
 int set_rk_gpio_platform(enum RK_GPIO_PLATFORM pl)
 {
@@ -114,30 +56,24 @@ int str_to_rk_gpio(const char * str)
     strncpy(str_buff, str, strlen(str));
     rkgpio_debug("Input : %s\n", str_buff);
 
-    for_rk_str_to_lower(str_buff, strlen(str_buff));
+    str_to_lower(str_buff, strlen(str_buff));
 
     memset(tmp_str, 0, sizeof(tmp_str));
-    _for_rk_str_replace(str_buff, "gpio", "", tmp_str, sizeof(tmp_str));
+    str_replace(str_buff, "gpio", "", tmp_str, sizeof(tmp_str));
     sprintf(str_buff, "%s", tmp_str);
 
     memset(tmp_str, 0, sizeof(tmp_str));
-    _for_rk_str_replace(str_buff, "_", "", tmp_str, sizeof(tmp_str));
+    str_replace(str_buff, "_", "", tmp_str, sizeof(tmp_str));
     sprintf(str_buff, "%s", tmp_str);
 
     memset(tmp_str, 0, sizeof(tmp_str));
-    _for_rk_str_replace(str_buff, "rk", "", tmp_str, sizeof(tmp_str));
+    str_replace(str_buff, "rk", "", tmp_str, sizeof(tmp_str));
     sprintf(str_buff, "%s", tmp_str);
 
     memset(tmp_str, 0, sizeof(tmp_str));
-    _for_rk_str_replace(str_buff, "rockchip", "", tmp_str, sizeof(tmp_str));
+    str_replace(str_buff, "rockchip", "", tmp_str, sizeof(tmp_str));
     sprintf(str_buff, "%s", tmp_str);
 
-#if 0
-    int v;
-    sscanf("2d", "%d", &v);
-    printf("%d\n", v);
-    // v =  2;
-#endif
 
     //ret = sscanf(str_buff, "gpio%d_%c%d", &bank, &group, &pos);
     ret = sscanf(str_buff, "%d%c%d", &bank, &group, &pos);
