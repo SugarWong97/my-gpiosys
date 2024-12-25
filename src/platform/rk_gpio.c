@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 #include "str.h"
+#include "gpio.h"
 #include "rk_gpio.h"
 
 static int platform = RK3588_GPIO_PLATFORM;

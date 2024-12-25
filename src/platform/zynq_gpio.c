@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-//#include "dir.h"
+#include "dir.h"
+#include "str.h"
 #include "gpio.h"
 #include "zynq_gpio.h"
 
@@ -137,6 +138,7 @@ int test(void)
 }
 */
 
+// 修改ZYNQ 700的IO输出值
 int zynq_7000_io_setvalue(const char * zynq_gpio_srt, int value)
 {
     int test_zynq_gpio_index;

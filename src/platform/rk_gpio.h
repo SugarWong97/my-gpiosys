@@ -14,6 +14,7 @@ int set_rk_gpio_platform(enum RK_GPIO_PLATFORM pl);
 // 将RK GPIO的标号转换为索引
 int str_to_rk_gpio(const char * str);
 
+// 修改RK的IO输出值
 int rk_io_setvalue(const char * rk_gpio_srt, int value);
 
 #endif/* __RK_GPIO_H__*/

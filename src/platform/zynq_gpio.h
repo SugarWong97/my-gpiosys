@@ -15,4 +15,7 @@ int set_zynq_gpio_platform(enum ZYNQ_GPIO_PLATFORM pl);
 // 将RK GPIO的标号转换为索引
 int str_to_zynq_gpio(const char * str);
 
+// 修改ZYNQ 700的IO输出值
+int zynq_7000_io_setvalue(const char * zynq_gpio_srt, int value);
+
 #endif/*__ZYNQ_GPIO_H__*/
