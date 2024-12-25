@@ -1,10 +1,16 @@
 #include <stdio.h>
 
 #include "gpio.h"
-#include "rk_gpio.h"
 
-//#define io_servalue rk_io_setvalue
+#if 0
+#include "rk_gpio.h"
+#define io_servalue rk_io_setvalue
+#endif
+
+#if 1
+#include "zynq_gpio.h"
 #define io_servalue zynq_7000_io_setvalue
+#endif
 
 int main(int argc, char * argv[])
 {
