@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 
 int str_to_lower(char * str, int len)
 {

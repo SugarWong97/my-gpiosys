@@ -15,7 +15,7 @@ int find_in_dir(char *dirpath, const char *keyword, char* got_filename)
     if(dir == NULL) {
         printf("open %s failed ",dirpath);
         perror(":");
-        return;
+        return 0;
     }
 
     struct dirent *ent;
